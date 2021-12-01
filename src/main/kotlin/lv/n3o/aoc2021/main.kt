@@ -2,7 +2,7 @@
 
 package lv.n3o.aoc2021
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
@@ -32,7 +32,8 @@ private fun ci(number: Int, expectedA: String, expectedB: String): TestCase {
 }
 
 val testCases: List<TestCase> = listOf(
-    ci(0,"hello","5"),
+    ci(0, "hello", "5"),
+    ci(1, "1713", "1734"),
 )
 
 fun main() = runBlocking {
@@ -46,7 +47,13 @@ fun main() = runBlocking {
 
             println()
             printTableSeparator()
-            println("| TASK | ${"Answer A".padCenter(ANSWER_SIZE)} | ${"Answer B".padCenter(ANSWER_SIZE)} | ${"Time".padCenter(TIME_SIZE)} |")
+            println(
+                "| TASK | ${"Answer A".padCenter(ANSWER_SIZE)} | ${"Answer B".padCenter(ANSWER_SIZE)} | ${
+                    "Time".padCenter(
+                        TIME_SIZE
+                    )
+                } |"
+            )
             printTableSeparator()
 
             results.forEach { result ->
@@ -60,7 +67,7 @@ fun main() = runBlocking {
                 print(if (result.correctB) "OK" else "F ")
                 print((result.resultB ?: "").padStart(ANSWER_SIZE - 2, ' '))
                 print(" | ")
-                print(result.time.toString().padStart(TIME_SIZE,' '))
+                print(result.time.toString().padStart(TIME_SIZE, ' '))
                 println(" |")
 
 
@@ -100,10 +107,10 @@ fun executeTask(tc: TestCase): TestResult {
     val task = tc.executor(tc.input)
 
     val (answerA, exceptionA) = try {
-            task.a() to null
-        } catch (e: Exception) {
-            null to e
-        }
+        task.a() to null
+    } catch (e: Exception) {
+        null to e
+    }
 
 
     val (answerB, exceptionB) = try {
@@ -159,7 +166,7 @@ fun printTableSeparator() {
     print("+")
     print("-".repeat(ANSWER_SIZE + 2))
     print("+")
-    print("-".repeat(TIME_SIZE+2))
+    print("-".repeat(TIME_SIZE + 2))
     println("|")
 }
 
