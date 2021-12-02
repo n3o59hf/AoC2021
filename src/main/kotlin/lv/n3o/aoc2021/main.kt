@@ -34,6 +34,7 @@ private fun ci(number: Int, expectedA: String, expectedB: String): TestCase {
 val testCases: List<TestCase> = listOf(
     ci(0, "hello", "5"),
     ci(1, "1713", "1734"),
+    ci(2,"1580000","1251263225"),
 )
 
 fun main() = runBlocking {
