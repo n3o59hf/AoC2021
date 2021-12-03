@@ -131,9 +131,10 @@ class MapWithLazy<K, V>(val backingMap: MutableMap<K, V>, val lazy: (K) -> V) : 
 
 fun <K, V> MutableMap<K, V>.withLazy(lazy: (K) -> V) = MapWithLazy(this, lazy)
 
-fun <V> Map<C2,V>.infinite(horizontal: Boolean = false, vertical: Boolean = false) = InfiniteMap(this,horizontal,vertical)
+fun <V> Map<C2, V>.infinite(horizontal: Boolean = false, vertical: Boolean = false) =
+    InfiniteMap(this, horizontal, vertical)
 
-class InfiniteMap<V>(val original: Map<C2,V>, val horizontal: Boolean, val vertical: Boolean) {
+class InfiniteMap<V>(val original: Map<C2, V>, val horizontal: Boolean, val vertical: Boolean) {
     val realMinX = original.keys.map { it.x }.minOrNull() ?: error("No data")
     val realMinY = original.keys.map { it.y }.minOrNull() ?: error("No data")
     val realMaxX = original.keys.map { it.x }.maxOrNull() ?: error("No data")
@@ -147,13 +148,13 @@ class InfiniteMap<V>(val original: Map<C2,V>, val horizontal: Boolean, val verti
             c.x < realMinX && horizontal -> {
                 var x = c.x
                 val diff = xRange.count()
-                while(x !in xRange) x+=diff
+                while (x !in xRange) x += diff
                 x
             }
             c.x > realMaxX && horizontal -> {
                 var x = c.x
                 val diff = xRange.count()
-                while(x !in xRange) x-=diff
+                while (x !in xRange) x -= diff
                 x
             }
             else -> error("X out of range")
@@ -163,22 +164,23 @@ class InfiniteMap<V>(val original: Map<C2,V>, val horizontal: Boolean, val verti
             c.y < realMinY && horizontal -> {
                 var y = c.y
                 val diff = yRange.count()
-                while(y !in yRange) y+=diff
+                while (y !in yRange) y += diff
                 y
             }
             c.y > realMaxY && horizontal -> {
                 var y = c.y
                 val diff = yRange.count()
-                while(y !in yRange) y-=diff
+                while (y !in yRange) y -= diff
                 y
             }
             else -> error("Y out of range")
         }
 
-        return original[C2(x,y)] ?: error("Non-square coordinate grid")
+        return original[C2(x, y)] ?: error("Non-square coordinate grid")
     }
 
     fun contains(coord: C2) =
         (horizontal || coord.x in xRange) && (vertical || coord.y in yRange)
-
 }
+
+fun <E> List<List<E>>.transpose() = List(this[0].size) { i -> this.map { it[i] } }
