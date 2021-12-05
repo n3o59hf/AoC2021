@@ -4,7 +4,7 @@ import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan2
 
-data class C2(val x: Int, val y: Int) {
+data class C2(val x: Int, val y: Int) : Comparable<C2> {
     operator fun plus(other: C2) = C2(x + other.x, y + other.y)
     operator fun minus(other: C2) = C2(x - other.x, y - other.y)
     operator fun times(other: Int) = C2(x * other, y * other)
@@ -66,4 +66,6 @@ data class C2(val x: Int, val y: Int) {
     override fun toString(): String {
         return "C2($x, $y)"
     }
+
+    override fun compareTo(other: C2) = x.compareTo(other.x).takeIf { it != 0 } ?: y.compareTo(other.y)
 }
