@@ -22,15 +22,13 @@ abstract class Input {
         it.trim().toInt()
     }
 
-    fun asCoordGrid(): Map<C2, Char> =
-        asLines().flatMapIndexed { y, l ->
-            l.mapIndexed { x, c ->
-                C2(x, y) to c
-            }
-        }.toMap()
+    fun asCoordGrid(): Map<C2, Char> = asLines().flatMapIndexed { y, l ->
+        l.mapIndexed { x, c ->
+            C2(x, y) to c
+        }
+    }.toMap()
 
-    fun asLinesPerBlock(trim: Boolean = true): List<List<String>> =
-        input.replace("\r", "").split("\n\n").map {
+    fun asLinesPerBlock(trim: Boolean = true): List<List<String>> = input.replace("\r", "").split("\n\n").map {
             it.split("\n").let { block ->
                 if (trim) block.map(String::trim) else block
             }
@@ -53,9 +51,9 @@ abstract class Task(val input: Input) {
         debugListener ?: return
 
         val logline = things.map { it ?: "<null>" }.joinToString(" ") { it.toString() }
-        val functionName = Thread.currentThread().stackTrace[2].methodName.padStart(12,' ')
+        val functionName = Thread.currentThread().stackTrace[2].methodName.padStart(12, ' ')
         val time = timeFromApplicationStart.formatTime()
-        val lineNumber = Thread.currentThread().stackTrace[2].lineNumber.toString().padStart(5,' ')
+        val lineNumber = Thread.currentThread().stackTrace[2].lineNumber.toString().padStart(5, ' ')
 
         debugListener?.let { it(("$functionName:$lineNumber: ($time) $logline")) }
     }

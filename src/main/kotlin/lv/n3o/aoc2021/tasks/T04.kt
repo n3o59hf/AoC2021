@@ -31,7 +31,7 @@ class T04(input: Input) : Task(input) {
 
         numberSequence.forEach { n ->
             val iterator = boards.iterator()
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 val board = iterator.next()
                 board.markNumber(n)
                 if (board.winner) iterator.remove()
@@ -46,9 +46,7 @@ class T04(input: Input) : Task(input) {
 private class BingoBoard(lines: List<String>) {
     var matches = 0
 
-    val grid = lines
-        .map { it.split(" ").filter(String::isNotEmpty).map(String::toInt) }
-        .flatMapIndexed { row, cells ->
+    val grid = lines.map { it.split(" ").filter(String::isNotEmpty).map(String::toInt) }.flatMapIndexed { row, cells ->
             cells.mapIndexed { column, cell ->
                 cell to 1.shl(row * 5 + column)
             }

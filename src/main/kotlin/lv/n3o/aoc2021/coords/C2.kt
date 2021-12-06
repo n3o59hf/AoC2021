@@ -36,17 +36,12 @@ data class C2(val x: Int, val y: Int) : Comparable<C2> {
     fun rotateLeft() = C2(y, -x)
 
     fun unit() = C2(
-        x.coerceIn(-1, 1),
-        y.coerceIn(-1, 1)
+        x.coerceIn(-1, 1), y.coerceIn(-1, 1)
     )
 
     fun neighbors4() = listOf(
-        this + C2(0, -1),
-        this + C2(1, 0),
-        this + C2(0, 1),
-        this + C2(-1, 0)
+        this + C2(0, -1), this + C2(1, 0), this + C2(0, 1), this + C2(-1, 0)
     )
-
 
     override fun equals(other: Any?): Boolean {
         if (other !is C2) return false

@@ -4,9 +4,7 @@ import lv.n3o.aoc2021.Input
 import lv.n3o.aoc2021.Task
 
 class T02(input: Input) : Task(input) {
-    val data = input
-        .asLines(true)
-        .map {
+    val data = input.asLines(true).map {
             it.trim().split(" ").let { (direction, x) -> direction to x.toInt() }
         }
 

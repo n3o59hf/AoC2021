@@ -23,20 +23,16 @@ private fun ci(number: Int, expectedA: String, expectedB: String): TestCase {
 
 
     return TestCase(
-        "T:$paddedNumber",
-        ClasspathInput(inputFile),
-        constructor,
-        expectedA,
-        expectedB
+        "T:$paddedNumber", ClasspathInput(inputFile), constructor, expectedA, expectedB
     )
 }
 
 val testCases: List<TestCase> = listOf(
     ci(1, "1713", "1734"),
-    ci(2,"1580000","1251263225"),
+    ci(2, "1580000", "1251263225"),
     ci(3, "2640986", "6822109"),
     ci(4, "8136", "12738"),
-    ci(5,"5835","17013"),
+    ci(5, "5835", "17013"),
     ci(6, "356190", "1617359101538"),
 )
 
@@ -199,9 +195,8 @@ class TestResult(
 }
 
 
-fun String.padCenter(targetLength: Int, char: Char = ' ') =
-    if (this.length < targetLength) {
-        val difference = targetLength - this.length
-        val start = difference / 2
-        this.padStart(start + this.length, char).padEnd(targetLength, char)
-    } else this
+fun String.padCenter(targetLength: Int, char: Char = ' ') = if (this.length < targetLength) {
+    val difference = targetLength - this.length
+    val start = difference / 2
+    this.padStart(start + this.length, char).padEnd(targetLength, char)
+} else this

@@ -6,9 +6,7 @@ import lv.n3o.aoc2021.coords.C2
 import kotlin.math.abs
 
 class T05(input: Input) : Task(input) {
-    private val data = input
-        .asLines(true)
-        .map {
+    private val data = input.asLines(true).map {
             val (start, end) = it.split(" -> ").map { c ->
                 val (x, y) = c.split(",").map(String::toInt)
                 C2(x, y)

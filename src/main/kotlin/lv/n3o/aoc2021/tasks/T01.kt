@@ -12,15 +12,8 @@ class T01(input: Input) : Task(input) {
     }
 
     override fun b(): String {
-        return data
-            .windowed(3)
-            .map { it.sum() }
-            .countIncreases()
+        return data.windowed(3).map { it.sum() }.countIncreases()
     }
 
-    private fun List<Int>.countIncreases() = this
-        .zipWithNext()
-        .map { it.second - it.first }
-        .count { it > 0 }
-        .toString()
+    private fun List<Int>.countIncreases() = this.zipWithNext().map { it.second - it.first }.count { it > 0 }.toString()
 }

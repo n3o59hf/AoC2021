@@ -8,10 +8,8 @@ private val startTime = System.nanoTime()
 
 val timeFromApplicationStart get() = System.nanoTime() - startTime
 
-fun Long.formatTime(): String = (this / 1000000.0).roundToInt().toString()
-    .padStart(6, ' ')
-    .chunked(3)
-    .joinToString(" ") + "ms"
+fun Long.formatTime(): String =
+    (this / 1000000.0).roundToInt().toString().padStart(6, ' ').chunked(3).joinToString(" ") + "ms"
 
 val String.cleanLines get() = lines().map { it.trim() }.filter { it.isNotBlank() }
 
@@ -26,12 +24,11 @@ fun <T> List<T>.permute(): List<List<T>> {
 
     val permutations = mutableListOf<List<T>>()
     val movableElement = first()
-    for (p in drop(1).permute())
-        for (i in 0..p.size) {
-            val mutation = p.toMutableList()
-            mutation.add(i, movableElement)
-            permutations.add(mutation)
-        }
+    for (p in drop(1).permute()) for (i in 0..p.size) {
+        val mutation = p.toMutableList()
+        mutation.add(i, movableElement)
+        permutations.add(mutation)
+    }
     return permutations
 }
 
@@ -52,8 +49,7 @@ fun <T> List<T>.combinations(): Sequence<Set<T>> = sequence {
             }
             incrementIndex++
             while (incrementIndex < indexes.size) {
-                if (incrementIndex != 0)
-                    indexes[incrementIndex] = indexes[incrementIndex - 1] + 1
+                if (incrementIndex != 0) indexes[incrementIndex] = indexes[incrementIndex - 1] + 1
                 incrementIndex++
             }
         }
@@ -63,8 +59,7 @@ fun <T> List<T>.combinations(): Sequence<Set<T>> = sequence {
 fun gcd(a: Int, b: Int): Int {
     var gcd = a.coerceAtMost(b)
     while (gcd > 0) {
-        if (a % gcd == 0 && b % gcd == 0)
-            return gcd
+        if (a % gcd == 0 && b % gcd == 0) return gcd
         gcd--
     }
     return -1
@@ -73,8 +68,7 @@ fun gcd(a: Int, b: Int): Int {
 fun gcd(a: Long, b: Long): Long {
     var gcd = a.coerceAtMost(b)
     while (gcd > 0L) {
-        if (a % gcd == 0L && b % gcd == 0L)
-            return gcd
+        if (a % gcd == 0L && b % gcd == 0L) return gcd
         gcd--
     }
     return -1
@@ -105,10 +99,8 @@ fun <T> Map<C2, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = { it.
         (minX..maxX).map { x ->
             var cell = conversion(this[C2(x, y)]).toString()
             cell = cell.substring(0, cell.length.coerceAtMost(cellWidth))
-            if (cell.length < cellWidth)
-                cell = cell.padEnd(cell.length + ((cellWidth - cell.length) / 2))
-            if (cell.length < cellWidth)
-                cell = cell.padStart(cellWidth)
+            if (cell.length < cellWidth) cell = cell.padEnd(cell.length + ((cellWidth - cell.length) / 2))
+            if (cell.length < cellWidth) cell = cell.padStart(cellWidth)
             cell
         }.joinToString("|", "|", "|")
 
@@ -179,8 +171,7 @@ class InfiniteMap<V>(val original: Map<C2, V>, val horizontal: Boolean, val vert
         return original[C2(x, y)] ?: error("Non-square coordinate grid")
     }
 
-    fun contains(coord: C2) =
-        (horizontal || coord.x in xRange) && (vertical || coord.y in yRange)
+    fun contains(coord: C2) = (horizontal || coord.x in xRange) && (vertical || coord.y in yRange)
 }
 
 fun <E> List<List<E>>.transpose() = List(this[0].size) { i -> this.map { it[i] } }

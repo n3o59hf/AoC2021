@@ -13,10 +13,7 @@ private val NEIGHBORS81 = (-1..1).flatMap { dx ->
 }.toSet()
 
 data class C4(
-    val x: Int,
-    val y: Int,
-    val z: Int,
-    val w: Int
+    val x: Int, val y: Int, val z: Int, val w: Int
 ) {
     val neighbors81 by lazy { NEIGHBORS81.map { this + it } }
 
@@ -31,18 +28,15 @@ data class C4(
             x > 0 -> 1
             x < 0 -> -1
             else -> 0
-        },
-        when {
+        }, when {
             y > 0 -> 1
             y < 0 -> -1
             else -> 0
-        },
-        when {
+        }, when {
             z > 0 -> 1
             z < 0 -> -1
             else -> 0
-        },
-        when {
+        }, when {
             w > 0 -> 1
             w < 0 -> -1
             else -> 0
