@@ -83,6 +83,18 @@ fun Long.toNearestMultipleUp(factor: Long): Long {
     return ((this / factor) + reminder) * factor
 }
 
+fun Int.nextPowerOf2(): Int {
+    var number = this
+    number--
+    number = number or (number shr 1)
+    number = number or (number shr 2)
+    number = number or (number shr 4)
+    number = number or (number shr 8)
+    number = number or (number shr 16)
+    number++
+    return number
+}
+
 fun <T> Map<C2, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = { it.toString() }) {
     val allKeys = keys
 
