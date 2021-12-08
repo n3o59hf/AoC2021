@@ -24,13 +24,9 @@ class T05(input: Input) : Task(input) {
     }
 
 
-    override fun a(): String {
-        return countRepeated(cardinalLines).toString()
-    }
+    override fun a() = countRepeated(cardinalLines)
 
-    override fun b(): String {
-        return countRepeated(cardinalLines + diagonalLines).toString()
-    }
+    override fun b() = countRepeated(cardinalLines + diagonalLines)
 
     private fun countRepeated(list: List<C2>): Int {
         var repeatedCount = 0

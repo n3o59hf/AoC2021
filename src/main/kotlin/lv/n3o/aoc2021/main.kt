@@ -4,6 +4,7 @@ package lv.n3o.aoc2021
 
 import kotlinx.coroutines.runBlocking
 import kotlin.math.min
+import kotlin.math.roundToLong
 import kotlin.system.measureTimeMillis
 
 private const val FIRST_DAY = 1
@@ -20,7 +21,6 @@ private fun ci(number: Int, expectedA: String, expectedB: String): TestCase {
     val taskClass = Class.forName("lv.n3o.aoc2021.tasks.$className")
     val constructor: (Input) -> Task =
         { input -> taskClass.getConstructor(Input::class.java).newInstance(input) as Task }
-
 
     return TestCase(
         "T:$paddedNumber", ClasspathInput(inputFile), constructor, expectedA, expectedB
@@ -59,33 +59,43 @@ fun main() = runBlocking {
             printTableSeparator()
 
             results.forEach { result ->
+                if (!result.passA || !result.passB) printTableSeparator()
+
                 print("|")
                 print(result.name.padCenter(6, ' '))
 
                 print("| ")
-                print(if (result.correctA) "OK" else "F ")
-                print((result.resultA ?: "").padStart(ANSWER_SIZE - 2, ' '))
+                print(if (result.passA) "OK" else if (result.answerA is TestAnswer.Failure) "E " else "F ")
+                print((result.answerA.displayText.take(ANSWER_SIZE - 2)).padStart(ANSWER_SIZE - 2, ' '))
                 print(" | ")
-                print(if (result.correctB) "OK" else "F ")
-                print((result.resultB ?: "").padStart(ANSWER_SIZE - 2, ' '))
+                print(if (result.passB) "OK" else if (result.answerB is TestAnswer.Failure) "E " else "F ")
+                print((result.answerB.displayText.take(ANSWER_SIZE - 2)).padStart(ANSWER_SIZE - 2, ' '))
                 print(" | ")
                 print(result.time.toString().padStart(TIME_SIZE, ' '))
                 println(" |")
 
-
-                if (!result.correctA) {
-                    println("A: Correct=${result.expectedA}")
+                if (!result.passA || !result.passB) {
+                    print("|")
+                    print(" ".repeat(6))
+                    print("| ")
+                    if (!result.passA) {
+                        print("A:")
+                        print((result.tc.expectedA.take(ANSWER_SIZE - 2)).padStart(ANSWER_SIZE - 2, ' '))
+                    } else {
+                        print(" ".repeat(ANSWER_SIZE))
+                    }
+                    print(" | ")
+                    if (!result.passB) {
+                        print("A:")
+                        print((result.tc.expectedB.take(ANSWER_SIZE - 2)).padStart(ANSWER_SIZE - 2, ' '))
+                    } else {
+                        print(" ".repeat(ANSWER_SIZE))
+                    }
+                    print(" | ")
+                    print(" ".repeat(TIME_SIZE))
+                    println(" |")
+                    printTableSeparator()
                 }
-                if (result.exceptionA != null) {
-                    println("A: Exception=${result.exceptionA}")
-                }
-                if (!result.correctB) {
-                    println("B: Correct=${result.expectedB}")
-                }
-                if (result.exceptionB != null) {
-                    println("B: Exception=${result.exceptionB}")
-                }
-
             }
             printTableSeparator()
         }
@@ -104,36 +114,26 @@ fun main() = runBlocking {
 }
 
 fun executeTask(tc: TestCase): TestResult {
-    val timeStart = System.currentTimeMillis()
+    val timeStart = System.nanoTime()
 
     val task = tc.executor(tc.input)
 
-    val (answerA, exceptionA) = try {
-        task.a() to null
+    val answerA = try {
+        TestAnswer.Success(task.a().toString())
     } catch (e: Exception) {
-        null to e
+        TestAnswer.Failure(e)
     }
 
-
-    val (answerB, exceptionB) = try {
-        task.b() to null
+    val answerB = try {
+        TestAnswer.Success(task.b().toString())
     } catch (e: Exception) {
-        null to e
+        TestAnswer.Failure(e)
     }
 
-    val timeEnd = System.currentTimeMillis()
+    val timeEnd = System.nanoTime()
+
     return TestResult(
-        tc.name,
-        tc.input,
-        tc.expectedA == answerA,
-        answerA,
-        exceptionA,
-        tc.expectedA,
-        tc.expectedB == answerB,
-        answerB,
-        exceptionB,
-        tc.expectedB,
-        timeEnd - timeStart
+        tc, answerA, answerB, ((timeEnd - timeStart) / 1_000_000.0).roundToLong()
     )
 }
 
@@ -180,22 +180,25 @@ class TestCase(
     val expectedB: String,
 )
 
-class TestResult(
-    val name: String,
-    val input: Input,
-    val correctA: Boolean,
-    val resultA: String?,
-    val exceptionA: Throwable?,
-    val expectedA: String,
-    val correctB: Boolean,
-    val resultB: String?,
-    val exceptionB: Throwable?,
-    val expectedB: String,
-    val time: Long,
-) {
-    val correct = correctA && correctB
+sealed class TestAnswer(val displayText: String) {
+    class Success(val result: String) : TestAnswer(result)
+    class Failure(val exception: Exception) : TestAnswer(exception.toString())
+
+    override fun toString() = displayText
 }
 
+class TestResult(
+    val tc: TestCase,
+    val answerA: TestAnswer,
+    val answerB: TestAnswer,
+    val time: Long,
+) {
+    val name get() = tc.name
+    val input get() = tc.input
+
+    val passA get() = answerA is TestAnswer.Success && tc.expectedA == answerA.result
+    val passB get() = answerB is TestAnswer.Success && tc.expectedB == answerB.result
+}
 
 fun String.padCenter(targetLength: Int, char: Char = ' ') = if (this.length < targetLength) {
     val difference = targetLength - this.length

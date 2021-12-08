@@ -13,9 +13,9 @@ class T08(input: Input) : Task(input) {
 
     private val simpleDigits = setOf('1', '4', '7', '8')
 
-    override fun a() = data.sumOf { it.decodedNumber.count { c -> c in simpleDigits } }.toString()
+    override fun a() = data.sumOf { it.decodedNumber.count { c -> c in simpleDigits } }
 
-    override fun b() = data.sumOf { it.decodedInt }.toString()
+    override fun b() = data.sumOf { it.decodedInt }
 
     private data class DisplayStates(val patterns: Set<Set<Char>>, val digits: List<Set<Char>>) {
         private val decoder: Map<Set<Char>, Char>

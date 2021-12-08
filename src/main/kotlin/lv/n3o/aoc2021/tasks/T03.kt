@@ -6,9 +6,9 @@ import lv.n3o.aoc2021.transpose
 
 
 class T03(input: Input) : Task(input) {
-    val data = input.asLines(true)
+    private val data = input.asLines(true)
 
-    override fun a(): String {
+    override fun a(): Int {
         val bits = data.map { it.toList() }.transpose().map {
                 val ones = it.count { c -> c == '1' }
                 data.size - ones < ones
@@ -16,14 +16,10 @@ class T03(input: Input) : Task(input) {
         val gamma = bits.joinToString("") { if (it) "0" else "1" }.toInt(2)
         val epsilon = bits.joinToString("") { if (it) "1" else "0" }.toInt(2)
 
-        return (gamma * epsilon).toString()
+        return gamma * epsilon
     }
 
-    override fun b(): String {
-        val oxygen = data.filterList(true)[0].toInt(2)
-        val co2 = data.filterList(false)[0].toInt(2)
-        return (oxygen * co2).toString()
-    }
+    override fun b() = data.filterList(true)[0].toInt(2) * data.filterList(false)[0].toInt(2)
 
     private tailrec fun List<String>.filterList(oxygen: Boolean, position: Int = 0): List<String> {
         val zeroes = this.count { it[position] == '0' }

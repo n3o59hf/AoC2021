@@ -12,21 +12,19 @@ class T04(input: Input) : Task(input) {
         return boardData.map(::BingoBoard)
     }
 
-    override fun a(): String {
+    override fun a(): Int {
         val boards = createBoards()
 
         numberSequence.forEach { n ->
             boards.forEach { it.markNumber(n) }
             val winner = boards.firstOrNull(BingoBoard::winner)
-            if (winner != null) {
-                return (winner.unmarkedNumbers.sum() * n).toString()
-            }
+            if (winner != null) return winner.unmarkedNumbers.sum() * n
         }
 
         error("Wrong input")
     }
 
-    override fun b(): String {
+    override fun b(): Int {
         val boards = createBoards().toMutableSet()
 
         numberSequence.forEach { n ->
@@ -35,7 +33,9 @@ class T04(input: Input) : Task(input) {
                 val board = iterator.next()
                 board.markNumber(n)
                 if (board.winner) iterator.remove()
-                if (boards.isEmpty()) return (board.unmarkedNumbers.sum() * n).toString()
+                if (boards.isEmpty()) {
+                    return board.unmarkedNumbers.sum() * n
+                }
             }
         }
 

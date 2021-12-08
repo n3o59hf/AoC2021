@@ -11,9 +11,9 @@ class T07(input: Input) : Task(input) {
     private val min = data.first()
     private val max = data.last()
 
-    override fun a() = locateMinimum { it }.toString()
+    override fun a() = locateMinimum { it }
 
-    override fun b() = locateMinimum { (it * (it + 1)) / 2 }.toString()
+    override fun b() = locateMinimum { (it * (it + 1)) / 2 }
 
     private inline fun locateMinimum(cost: (Int) -> Int): Int {
         var step = ((max - min) / 2).nextPowerOf2()
