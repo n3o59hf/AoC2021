@@ -187,3 +187,16 @@ class InfiniteMap<V>(val original: Map<C2, V>, val horizontal: Boolean, val vert
 }
 
 fun <E> List<List<E>>.transpose() = List(this[0].size) { i -> this.map { it[i] } }
+
+
+class MapWithDefault<K,V>(private val map: Map<K,V>, private val default: V) : Map<K,V> by map {
+    override fun get(key: K): V = map[key] ?: default
+}
+
+class MutableMapWithDefault<K,V>(private val map: MutableMap<K,V>, private val default: V) : MutableMap<K,V> by map {
+    override fun get(key: K): V = map[key] ?: default
+}
+
+fun <K,V> Map<K,V>.setDefault(value: V) = MapWithDefault(this,value)
+
+fun <K,V> MutableMap<K,V>.setDefault(value: V) = MutableMapWithDefault(this,value)
