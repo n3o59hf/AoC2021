@@ -9,9 +9,7 @@ class T11(input: Input) : Task(input) {
     private val energyLevels = generateSequence(data) { input ->
         generateSequence(input.mapValues { (_, v) -> v + 1 }) { octopii ->
             octopii.filter { it.value > 9 }.keys.takeIf { it.isNotEmpty() }?.let { flashesNow ->
-                val energized = flashesNow
-                    .flatMap { it.neighbors8() }
-                    .groupBy { it }
+                val energized = flashesNow.flatMap { it.neighbors8() }.groupBy { it }
 
                 octopii.mapValues { (k, v) -> if (k in flashesNow) Int.MIN_VALUE else v + (energized[k]?.size ?: 0) }
             }
