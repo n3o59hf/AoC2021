@@ -43,6 +43,10 @@ data class C2(val x: Int, val y: Int) : Comparable<C2> {
         this + C2(0, -1), this + C2(1, 0), this + C2(0, 1), this + C2(-1, 0)
     )
 
+    fun neighbors8() = listOf(
+        this + C2(0, -1), this + C2(1, 0), this + C2(0, 1), this + C2(-1, 0),
+        this + C2(1, -1), this + C2(1, 1), this + C2(-1, 1), this + C2(-1, -1)
+    )
     override fun equals(other: Any?): Boolean {
         if (other !is C2) return false
 
