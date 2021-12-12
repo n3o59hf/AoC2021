@@ -189,14 +189,25 @@ class InfiniteMap<V>(val original: Map<C2, V>, val horizontal: Boolean, val vert
 fun <E> List<List<E>>.transpose() = List(this[0].size) { i -> this.map { it[i] } }
 
 
-class MapWithDefault<K,V>(private val map: Map<K,V>, private val default: V) : Map<K,V> by map {
+class MapWithDefault<K, V>(private val map: Map<K, V>, private val default: V) : Map<K, V> by map {
     override fun get(key: K): V = map[key] ?: default
 }
 
-class MutableMapWithDefault<K,V>(private val map: MutableMap<K,V>, private val default: V) : MutableMap<K,V> by map {
+class MutableMapWithDefault<K, V>(private val map: MutableMap<K, V>, private val default: V) : MutableMap<K, V> by map {
     override fun get(key: K): V = map[key] ?: default
 }
 
-fun <K,V> Map<K,V>.setDefault(value: V) = MapWithDefault(this,value)
+fun <K, V> Map<K, V>.setDefault(value: V) = MapWithDefault(this, value)
 
-fun <K,V> MutableMap<K,V>.setDefault(value: V) = MutableMapWithDefault(this,value)
+fun <K, V> MutableMap<K, V>.setDefault(value: V) = MutableMapWithDefault(this, value)
+
+fun <T> prioritizingComparator(priority: List<T>, fallbackComparator: Comparator<T>) = Comparator { a: T, b: T ->
+    val aIndex = priority.indexOf(a)
+    val bIndex = priority.indexOf(b)
+    when {
+        aIndex < 0 && bIndex < 0 -> fallbackComparator.compare(a, b)
+        aIndex < 0 -> 1
+        bIndex < 0 -> -1
+        else -> aIndex - bIndex
+    }
+}
