@@ -1,6 +1,5 @@
 package lv.n3o.aoc2021.ocr
 
-import external.FONT_4X6
 import lv.n3o.aoc2021.coords.C2
 
 fun Set<C2>.recognize4X6() = (this.minOf(C2::x)..this.maxOf(C2::x)).windowed(4, 5).joinToString("") { columns ->
