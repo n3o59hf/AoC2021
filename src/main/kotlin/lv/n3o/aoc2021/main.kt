@@ -42,6 +42,7 @@ val testCases: List<TestCase> = listOf(
     ci(12, "5333", "146553"),
     ci(13, "693", "UCLZRAZU"),
     ci(14, "3555", "4439442043739"),
+    ci(15, "398", "2817"),
 )
 
 fun main() = runBlocking {
@@ -52,17 +53,8 @@ fun main() = runBlocking {
         val time = measureTimeMillis {
             val results = testCases.asSequence().map(::executeTask)
 
-
             println()
-            printTableSeparator()
-            println(
-                "| TASK | ${"Answer A".padCenter(ANSWER_SIZE)} | ${"Answer B".padCenter(ANSWER_SIZE)} | ${
-                    "Time".padCenter(
-                        TIME_SIZE
-                    )
-                } |"
-            )
-            printTableSeparator()
+            printHeader()
 
             results.forEach { result ->
                 if (!result.passA || !result.passB) printTableSeparator()
@@ -71,10 +63,10 @@ fun main() = runBlocking {
                 print(result.name.padCenter(6, ' '))
 
                 print("| ")
-                print(if (result.passA) "OK" else if (result.answerA is TestAnswer.Failure) "E " else "F ")
+                print(if (result.passA) "OK" else if (result.answerA is TestAnswer.Failure) "E:" else "F ")
                 print((result.answerA.displayText.take(ANSWER_SIZE - 2)).padStart(ANSWER_SIZE - 2, ' '))
                 print(" | ")
-                print(if (result.passB) "OK" else if (result.answerB is TestAnswer.Failure) "E " else "F ")
+                print(if (result.passB) "OK" else if (result.answerB is TestAnswer.Failure) "E:" else "F ")
                 print((result.answerB.displayText.take(ANSWER_SIZE - 2)).padStart(ANSWER_SIZE - 2, ' '))
                 print(" | ")
                 print(result.time.toString().padStart(TIME_SIZE, ' '))
@@ -101,6 +93,21 @@ fun main() = runBlocking {
                     print(" ".repeat(TIME_SIZE))
                     println(" |")
                     printTableSeparator()
+                    if (result.answerA is TestAnswer.Failure) {
+                        println()
+                        result.answerA.exception.printStackTrace(System.out)
+                        println()
+                    }
+                    if (result.answerB is TestAnswer.Failure) {
+                        println()
+                        result.answerB.exception.printStackTrace(System.out)
+                        println()
+                    }
+
+                    if (result.answerA is TestAnswer.Failure || result.answerB is TestAnswer.Failure) {
+                        printHeader()
+                    }
+
                 }
             }
             printTableSeparator()
@@ -176,6 +183,18 @@ fun printTableSeparator() {
     print("+")
     print("-".repeat(TIME_SIZE + 2))
     println("|")
+}
+
+fun printHeader() {
+    printTableSeparator()
+    println(
+        "| TASK | ${"Answer A".padCenter(ANSWER_SIZE)} | ${"Answer B".padCenter(ANSWER_SIZE)} | ${
+            "Time".padCenter(
+                TIME_SIZE
+            )
+        } |"
+    )
+    printTableSeparator()
 }
 
 class TestCase(
