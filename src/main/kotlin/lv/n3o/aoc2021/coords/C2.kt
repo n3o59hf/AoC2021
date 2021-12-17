@@ -54,6 +54,9 @@ data class C2(val x: Int, val y: Int) : Comparable<C2> {
 
     fun arrayIndex(max: C2) = if (x < 0 || y < 0 || x > max.x || y > max.y) null else x + y * (max.x + 1)
 
+    fun inSquareInclusive(leftTop: C2, bottomRight: C2) =
+        x >= leftTop.x && x <= bottomRight.x && y >= leftTop.y && y <= bottomRight.y
+
     override fun equals(other: Any?): Boolean {
         if (other !is C2) return false
 
