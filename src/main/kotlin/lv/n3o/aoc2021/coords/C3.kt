@@ -4,7 +4,36 @@ import kotlin.math.abs
 
 data class C3(
     val x: Int, val y: Int, val z: Int
-) {
+) : Comparable<C3> {
+    val rotations by lazy {
+        listOf(
+            this,
+            C3(x = y, y = -x, z = z),
+            C3(x = -x, y = -y, z = z),
+            C3(x = -y, y = x, z = z),
+            C3(x = -y, y = -z, z = x),
+            C3(x = -z, y = y, z = x),
+            C3(x = y, y = z, z = x),
+            C3(x = z, y = -y, z = x),
+            C3(x = z, y = -x, z = -y),
+            C3(x = -x, y = -z, z = -y),
+            C3(x = -z, y = x, z = -y),
+            C3(x = x, y = z, z = -y),
+            C3(x = -z, y = -y, z = -x),
+            C3(x = -y, y = z, z = -x),
+            C3(x = z, y = y, z = -x),
+            C3(x = y, y = -z, z = -x),
+            C3(x = y, y = x, z = -z),
+            C3(x = x, y = -y, z = -z),
+            C3(x = -y, y = -x, z = -z),
+            C3(x = -x, y = y, z = -z),
+            C3(x = -x, y = z, z = y),
+            C3(x = z, y = x, z = y),
+            C3(x = x, y = -z, z = y),
+            C3(x = -z, y = -x, z = y)
+        )
+    }
+
     operator fun plus(other: C3) = C3(x + other.x, y + other.y, z + other.z)
     operator fun minus(other: C3) = this + C3(-other.x, -other.y, -other.z)
 
@@ -34,4 +63,7 @@ data class C3(
             }
         }
     }
+
+    override fun compareTo(other: C3) =
+        x.compareTo(other.x).takeIf { it != 0 } ?: y.compareTo(other.y).takeIf { it != 0 } ?: z.compareTo(other.z)
 }

@@ -29,10 +29,10 @@ abstract class Input {
     }.toMap()
 
     fun asLinesPerBlock(trim: Boolean = true): List<List<String>> = input.replace("\r", "").split("\n\n").map {
-            it.split("\n").let { block ->
-                if (trim) block.map(String::trim) else block
-            }
+        it.split("\n").let { block ->
+            if (trim) block.map(String::trim) else block
         }
+    }
 }
 
 class ClasspathInput(val name: String) : Input() {
@@ -62,6 +62,6 @@ abstract class Task(val input: Input) {
         if (isLoggerOn()) log(scope())
     }
 
-    open fun a(): Any = ""
-    open fun b(): Any = ""
+    open fun a(): Any? = null
+    open fun b(): Any? = null
 }
