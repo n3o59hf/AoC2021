@@ -211,3 +211,5 @@ fun <T> prioritizingComparator(priority: List<T>, fallbackComparator: Comparator
         else -> aIndex - bIndex
     }
 }
+
+operator fun <T> Sequence<T>.get(index: Int) = drop(index).first()

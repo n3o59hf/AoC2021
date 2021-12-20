@@ -28,6 +28,8 @@ abstract class Input {
         }
     }.toMap()
 
+    fun asBlocks(): List<Input> = input.replace("\r", "").split("\n\n").map { StringInput(it) }
+
     fun asLinesPerBlock(trim: Boolean = true): List<List<String>> = input.replace("\r", "").split("\n\n").map {
         it.split("\n").let { block ->
             if (trim) block.map(String::trim) else block
@@ -41,6 +43,10 @@ class ClasspathInput(val name: String) : Input() {
             return bufferedReader(Charsets.UTF_8).readText()
         }
     }
+}
+
+class StringInput(val data: String) : Input() {
+    override fun readInput() = data
 }
 
 abstract class Task(val input: Input) {
