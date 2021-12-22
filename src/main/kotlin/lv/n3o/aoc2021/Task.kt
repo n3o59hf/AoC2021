@@ -39,7 +39,7 @@ abstract class Input {
 
 class ClasspathInput(val name: String) : Input() {
     override fun readInput(): String {
-        with(this::class.java.classLoader.getResourceAsStream(name)!!) {
+        with(javaClass.getResourceAsStream(name) ?: ClassLoader.getSystemClassLoader().getResourceAsStream(name)) {
             return bufferedReader(Charsets.UTF_8).readText()
         }
     }

@@ -17,7 +17,7 @@ private const val REPEAT_RUNS = 1
 private fun ci(number: Int, expectedA: String, expectedB: String): TestCase {
     val paddedNumber = "$number".padStart(2, '0')
     val className = "T$paddedNumber"
-    val inputFile = "i$paddedNumber.txt"
+    val inputFile = "/i$paddedNumber.txt"
     val taskClass = Class.forName("lv.n3o.aoc2021.tasks.$className")
     val constructor: (Input) -> Task =
         { input -> taskClass.getConstructor(Input::class.java).newInstance(input) as Task }
