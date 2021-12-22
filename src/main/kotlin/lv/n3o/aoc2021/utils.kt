@@ -213,3 +213,6 @@ fun <T> prioritizingComparator(priority: List<T>, fallbackComparator: Comparator
 }
 
 operator fun <T> Sequence<T>.get(index: Int) = drop(index).first()
+
+val Boolean.sign get() = if (this) 1 else -1
+val Boolean.signLong get() = if (this) 1L else -1L

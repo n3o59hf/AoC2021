@@ -64,6 +64,12 @@ data class C3(
         }
     }
 
+    fun inBoxInclusive(from: C3, to: C3) =
+        this.x >= from.x && this.y >= from.y && this.z >= from.z && this.x <= to.x && this.y <= to.y && this.z <= to.z
+
+    fun vectorVolume() = x * y * z
+    fun vectorVolumeLong() = x.toLong() * y.toLong() * z.toLong()
+
     override fun compareTo(other: C3) =
         x.compareTo(other.x).takeIf { it != 0 } ?: y.compareTo(other.y).takeIf { it != 0 } ?: z.compareTo(other.z)
 }
