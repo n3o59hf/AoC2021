@@ -23,11 +23,13 @@ tasks.named("run").configure {
 }
 
 if (System.getProperty("java.vm.vendor").contains("Graal")) {
-    graalvmNative {
-        binaries {
-            named("main") {
-                agent {
-                    enabled.set(true)
+    tasks.named("nativeCompile").configure {
+        graalvmNative {
+            binaries {
+                named("main") {
+                    agent {
+                        enabled.set(true)
+                    }
                 }
             }
         }
