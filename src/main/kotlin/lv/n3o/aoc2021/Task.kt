@@ -22,7 +22,7 @@ abstract class Input {
         it.trim().toInt()
     }
 
-    fun asCoordGrid(): Map<C2, Char> = asLines().flatMapIndexed { y, l ->
+    fun asCoordGrid(trim: Boolean = true): Map<C2, Char> = asLines(trim).flatMapIndexed { y, l ->
         l.mapIndexed { x, c ->
             C2(x, y) to c
         }

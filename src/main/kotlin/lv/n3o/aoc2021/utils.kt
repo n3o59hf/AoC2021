@@ -95,6 +95,23 @@ fun Int.nextPowerOf2(): Int {
     return number
 }
 
+fun <T> Map<C2, T>.compactDebugDraw(conversion: (T?) -> Char = { it?.toString()?.get(0) ?: ' ' }) {
+    val allKeys = keys
+
+    val maxX = allKeys.map(C2::x).maxOrNull() ?: 1
+    val maxY = allKeys.map(C2::y).maxOrNull() ?: 1
+    val minX = allKeys.map(C2::x).minOrNull() ?: 1
+    val minY = allKeys.map(C2::y).minOrNull() ?: 1
+
+    val output = (minY..maxY).joinToString("\n") { y ->
+        (minX..maxX).map { x ->
+            conversion(this[C2(x, y)])
+        }.joinToString("")
+    }
+    println("\n$output\n")
+}
+
+
 fun <T> Map<C2, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = { it.toString() }) {
     val allKeys = keys
 
@@ -119,6 +136,7 @@ fun <T> Map<C2, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = { it.
     }.joinToString(verticalSeperator) + verticalSeperator
     println("\n$output\n")
 }
+
 
 class MapWithLazy<K, V>(val backingMap: MutableMap<K, V>, val lazy: (K) -> V) : MutableMap<K, V> by backingMap {
     override operator fun get(key: K): V {
